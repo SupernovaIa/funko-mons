@@ -58,6 +58,21 @@ export const funkos: Funko[] = [
     accentColor: "#3a5f8f",
     modelUrl: "/models/lugia.glb",
   },
+  {
+    slug: "hooh",
+    name: "Ho-Oh",
+    number: "#250",
+    description:
+      "Un Funko Pop que no existe realmente, imaginado con IA para este Pokémon.",
+    images: [
+      { label: "Vista frontal", src: "/funkos/hooh/front.png" },
+      { label: "Caja", src: "/funkos/hooh/box.png" },
+      { label: "Vista lateral", src: "/funkos/hooh/side.png" },
+      { label: "Vista trasera", src: "/funkos/hooh/back.png" },
+    ],
+    accentColor: "#d4472b",
+    modelUrl: "/models/hooh.glb",
+  },
 ];
 
 export function getFunko(slug: string) {
