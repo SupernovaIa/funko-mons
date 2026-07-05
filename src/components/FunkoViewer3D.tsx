@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef, type MutableRefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Bounds,
@@ -11,11 +11,17 @@ import {
 } from "@react-three/drei";
 import { MeshPhysicalMaterial, MeshStandardMaterial, type Group, type Mesh } from "three";
 
-function FunkoPlaceholder({ accentColor }: { accentColor: string }) {
+function FunkoPlaceholder({
+  accentColor,
+  autoRotate,
+}: {
+  accentColor: string;
+  autoRotate: MutableRefObject<boolean>;
+}) {
   const group = useRef<Group>(null);
 
   useFrame((_, delta) => {
-    if (group.current) group.current.rotation.y += delta * 0.4;
+    if (group.current && autoRotate.current) group.current.rotation.y += delta * 0.4;
   });
 
   return (
@@ -44,7 +50,13 @@ function FunkoPlaceholder({ accentColor }: { accentColor: string }) {
   );
 }
 
-function FunkoModel({ url }: { url: string }) {
+function FunkoModel({
+  url,
+  autoRotate,
+}: {
+  url: string;
+  autoRotate: MutableRefObject<boolean>;
+}) {
   const { scene } = useGLTF(url);
   const group = useRef<Group>(null);
 
@@ -69,7 +81,7 @@ function FunkoModel({ url }: { url: string }) {
   }, [scene]);
 
   useFrame((_, delta) => {
-    if (group.current) group.current.rotation.y += delta * 0.4;
+    if (group.current && autoRotate.current) group.current.rotation.y += delta * 0.4;
   });
 
   return (
@@ -86,6 +98,11 @@ export function FunkoViewer3D({
   accentColor: string;
   modelUrl?: string;
 }) {
+  const autoRotate = useRef(true);
+  const resumeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  useEffect(() => () => clearTimeout(resumeTimer.current), []);
+
   return (
     <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#0d0c0a]">
       <div
@@ -103,9 +120,9 @@ export function FunkoViewer3D({
           <Environment preset="apartment" environmentIntensity={0.6} />
           <Bounds fit clip observe margin={1.3}>
             {modelUrl ? (
-              <FunkoModel url={modelUrl} />
+              <FunkoModel url={modelUrl} autoRotate={autoRotate} />
             ) : (
-              <FunkoPlaceholder accentColor={accentColor} />
+              <FunkoPlaceholder accentColor={accentColor} autoRotate={autoRotate} />
             )}
           </Bounds>
           <ContactShadows
@@ -115,7 +132,21 @@ export function FunkoViewer3D({
             blur={2.4}
           />
         </Suspense>
-        <OrbitControls makeDefault enablePan={false} minDistance={1} maxDistance={20} />
+        <OrbitControls
+          makeDefault
+          enablePan={false}
+          minDistance={1}
+          maxDistance={20}
+          onStart={() => {
+            autoRotate.current = false;
+            clearTimeout(resumeTimer.current);
+          }}
+          onEnd={() => {
+            resumeTimer.current = setTimeout(() => {
+              autoRotate.current = true;
+            }, 3000);
+          }}
+        />
       </Canvas>
       {!modelUrl && (
         <div className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full border border-[#c9a25c]/25 bg-[#141210]/90 px-3 py-1 text-xs text-[#e8e3d8]/70">
