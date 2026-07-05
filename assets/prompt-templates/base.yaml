@@ -1,0 +1,49 @@
+# Shared rules for all Funko reference images (tuned for Tripo3D image-to-3D
+# reconstruction). Do not put per-character info here — see
+# assets/funko-specs/<slug>.yaml for that.
+
+style:
+  figure_type: "chibi vinyl collectible figure"
+  material: "smooth matte-satin vinyl plastic, clean flat colors, no fine surface texture or noise"
+  proportions: "oversized round head, small simplified body, big black eyes, super-deformed toy proportions"
+
+lighting:
+  type: "soft even diffuse studio lighting"
+  avoid:
+    - "harsh directional shadows"
+    - "specular highlight / glossy hotspot baked into the image"
+    - "rim light or colored gels"
+
+background:
+  color: "plain flat light-gray"
+  avoid:
+    - "patterns or watermarks"
+    - "logos or text"
+    - "packaging or box"
+
+camera:
+  height: "eye-level with the figure"
+  distance: "medium shot, figure fills ~70% of frame height"
+  lens: "standard lens, no wide-angle/fisheye distortion"
+  framing: "single figure only, centered"
+
+negative_prompt: >
+  no text, no logo, no watermark, no packaging, no box, no multiple figures,
+  no motion blur, no depth-of-field blur, no vignette
+
+views:
+  front:
+    angle: "direct front view, camera facing the figure head-on"
+  left:
+    angle: "camera rotated 90 degrees to the figure's left, profile view"
+  back:
+    angle: "direct back view, camera facing the figure from behind"
+  right:
+    angle: "camera rotated 90 degrees to the figure's right, profile view"
+
+prompt_template: >
+  {style.figure_type} of {creature}, {pose}, {angle},
+  {style.proportions}, {style.material},
+  {background.color} background, {lighting.type},
+  {camera.height}, {camera.distance}, {camera.framing}.
+  {negative_prompt}
