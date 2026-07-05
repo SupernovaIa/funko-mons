@@ -17,7 +17,7 @@ export function FunkoCard({ funko }: { funko: Funko }) {
           }}
         />
         <Image
-          src={funko.image}
+          src={funko.images[0].src}
           alt={`Funko Pop de ${funko.name}`}
           fill
           className="relative object-contain p-3 transition duration-300 group-hover:scale-[1.03]"
