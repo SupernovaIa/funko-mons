@@ -42,6 +42,22 @@ export const funkos: Funko[] = [
     accentColor: "#5a8f3c",
     modelUrl: "/models/flygon.glb",
   },
+  {
+    slug: "lugia",
+    name: "Lugia",
+    number: "#249",
+    description:
+      "Un Funko Pop que no existe realmente, imaginado con IA para este Pokémon.",
+    images: [
+      { label: "Vista frontal", src: "/funkos/lugia/front.png" },
+      { label: "Caja", src: "/funkos/lugia/box.png" },
+      { label: "Vista izquierda", src: "/funkos/lugia/left.png" },
+      { label: "Vista trasera", src: "/funkos/lugia/back.png" },
+      { label: "Vista derecha", src: "/funkos/lugia/right.png" },
+    ],
+    accentColor: "#3a5f8f",
+    modelUrl: "/models/lugia.glb",
+  },
 ];
 
 export function getFunko(slug: string) {
