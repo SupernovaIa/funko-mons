@@ -46,6 +46,9 @@ async function createTask(files) {
       model: "v3.1-20260211",
       texture: true,
       pbr: true,
+      texture_quality: "detailed",
+      face_limit: 20000,
+      smart_low_poly: true,
     }),
   });
   const json = await res.json();
